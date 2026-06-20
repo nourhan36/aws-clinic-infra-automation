@@ -1,6 +1,6 @@
 services:
   web:
-    image: Y724413959426.dkr.ecr.us-east-1.amazonaws.com/clinic_image:latest
+    image: 724413959426.dkr.ecr.us-east-1.amazonaws.com/clinic_image:latest
     container_name: clinic_web
     ports:
       - "8000:8000"
