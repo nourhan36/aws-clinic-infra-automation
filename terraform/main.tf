@@ -66,3 +66,16 @@ module "rds" {
   db_username           = var.db_username
   db_password           = var.db_password
 }
+
+module "cloudwatch" {
+  source                  = "./modules/cloudwatch"
+  project_name            = var.project_name
+  asg_name                = module.asg.asg_name
+  alb_arn_suffix          = module.alb.alb_arn_suffix
+  target_group_arn_suffix = module.alb.target_group_arn_suffix
+  rds_identifier          = module.rds.rds_identifier
+
+  alarm_actions = []
+
+  tags = var.tags
+}

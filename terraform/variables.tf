@@ -60,3 +60,13 @@ variable "db_password" {
   type      = string
   sensitive = true
 }
+
+variable "tags" {
+  type = map(string)
+
+  default = {
+    Project     = "clinic"
+    Environment = "dev"
+    ManagedBy   = "Terraform"
+  }
+}
