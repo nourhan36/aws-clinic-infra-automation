@@ -39,3 +39,13 @@ variable "private_rds_subnet_cidrs" {
 variable "repository_name" {
   type = string
 }
+
+#========================================================================
+# Launch Template Module
+variable "instance_type" {
+  type = string
+}
+
+variable "ami_id" {
+  type = string
+}

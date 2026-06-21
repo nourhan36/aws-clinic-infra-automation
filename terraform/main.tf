@@ -32,3 +32,12 @@ module "iam" {
   source       = "./modules/iam"
   project_name = var.project_name
 }
+
+module "launch_template" {
+  source                = "./modules/launch-template"
+  project_name          = var.project_name
+  security_group_id     = module.security-groups.app_sg_id
+  instance_profile_name = module.iam.instance_profile_name
+  instance_type         = var.instance_type
+  ami_id                = var.ami_id
+}
