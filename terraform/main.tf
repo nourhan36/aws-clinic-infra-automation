@@ -15,3 +15,10 @@ module "vpc" {
   private_rds_subnet_cidrs = var.private_rds_subnet_cidrs
 
 }
+
+module "security-groups" {
+  source         = "./modules/security-groups"
+  project_name   = var.project_name
+  vpc_id         = module.vpc.vpc_id
+  vpc_cidr_block = module.vpc.vpc_cidr_block
+}
