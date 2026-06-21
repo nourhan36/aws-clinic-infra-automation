@@ -1,10 +1,3 @@
-variable "aws_region" {
-  type        = string
-  description = "AWS Region"
-}
-
-# VPC Module
-
 # VPC
 variable "vpc_cidr_block" {
   type = string
@@ -32,4 +25,3 @@ variable "private_app_subnet_cidrs" {
 variable "private_rds_subnet_cidrs" {
   type = list(string)
 }
-
