@@ -3,6 +3,7 @@ variable "aws_region" {
   description = "AWS Region"
 }
 
+#========================================================================
 # VPC Module
 
 # VPC
@@ -33,3 +34,8 @@ variable "private_rds_subnet_cidrs" {
   type = list(string)
 }
 
+#========================================================================
+# ECR Module
+variable "repository_name" {
+  type = string
+}
