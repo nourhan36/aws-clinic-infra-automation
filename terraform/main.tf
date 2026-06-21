@@ -57,3 +57,12 @@ module "asg" {
   launch_template_id = module.launch_template.launch_template_id
   target_group_arn   = module.alb.target_group_arn
 }
+
+module "rds" {
+  source                = "./modules/rds"
+  project_name          = var.project_name
+  subnet_ids            = module.vpc.private_rds_subnet_ids
+  rds_security_group_id = module.security-groups.rds_sg_id
+  db_username           = var.db_username
+  db_password           = var.db_password
+}

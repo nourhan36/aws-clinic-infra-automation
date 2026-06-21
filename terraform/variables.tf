@@ -49,3 +49,14 @@ variable "instance_type" {
 variable "ami_id" {
   type = string
 }
+
+#========================================================================
+# RDS Module
+variable "db_username" {
+  type = string
+}
+
+variable "db_password" {
+  type      = string
+  sensitive = true
+}
