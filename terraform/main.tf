@@ -27,3 +27,8 @@ module "ecr" {
   source          = "./modules/ecr"
   repository_name = var.repository_name
 }
+
+module "iam" {
+  source       = "./modules/iam"
+  project_name = var.project_name
+}

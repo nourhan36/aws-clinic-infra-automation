@@ -3,15 +3,15 @@ variable "aws_region" {
   description = "AWS Region"
 }
 
+variable "project_name" {
+  type = string
+}
+
 #========================================================================
 # VPC Module
 
 # VPC
 variable "vpc_cidr_block" {
-  type = string
-}
-
-variable "project_name" {
   type = string
 }
 
