@@ -9,3 +9,7 @@ variable "vpc_id" {
 variable "vpc_cidr_block" {
   type = string
 }
+
+variable "my_ip_cidr" {
+  type        = string
+}
