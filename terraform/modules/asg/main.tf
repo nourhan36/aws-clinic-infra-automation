@@ -22,4 +22,17 @@ resource "aws_autoscaling_group" "app" {
     value               = "${var.project_name}-app"
     propagate_at_launch = true
   }
+
+  tag {
+    key                 = "Project"
+    value               = var.project_name
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Role"
+    value               = "app"
+    propagate_at_launch = true
+  }
+
 }

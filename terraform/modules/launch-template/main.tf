@@ -3,6 +3,7 @@ resource "aws_launch_template" "ec2_launch_template" {
 
   image_id      = var.ami_id
   instance_type = var.instance_type
+  key_name      = var.key_name
 
   iam_instance_profile {
     name = var.instance_profile_name
@@ -16,7 +17,9 @@ resource "aws_launch_template" "ec2_launch_template" {
     resource_type = "instance"
 
     tags = {
-      Name = "${var.project_name}-app-instance"
+      Name    = "${var.project_name}-app-instance"
+      Project = var.project_name
+      Role    = "app"
     }
   }
 }

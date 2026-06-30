@@ -41,6 +41,7 @@ module "launch_template" {
   instance_profile_name = module.iam.instance_profile_name
   instance_type         = var.instance_type
   ami_id                = var.ami_id
+  key_name              = var.key_name
 }
 
 module "alb" {

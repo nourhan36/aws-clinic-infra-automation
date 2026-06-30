@@ -68,10 +68,10 @@ resource "aws_vpc_security_group_egress_rule" "app_all_outbound_ipv4" {
 resource "aws_vpc_security_group_ingress_rule" "app_ssh_from_bastion" {
   security_group_id            = aws_security_group.app.id
   referenced_security_group_id = aws_security_group.bastion_sg.id
-description = "Allow SSH from bastion to app EC2 instances"
-  from_port   = 22
-  ip_protocol = "tcp"
-  to_port     = 22
+  description                  = "Allow SSH from bastion to app EC2 instances"
+  from_port                    = 22
+  ip_protocol                  = "tcp"
+  to_port                      = 22
 }
 
 # RDS
@@ -112,16 +112,16 @@ resource "aws_security_group" "bastion_sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "bastion_ssh_from_my_ip" {
   security_group_id = aws_security_group.bastion_sg.id
-  description = "Allow SSH to bastion from current public IP"
-  cidr_ipv4   = local.my_public_ip_cidr
-  from_port   = 22
-  ip_protocol = "tcp"
-  to_port     = 22
+  description       = "Allow SSH to bastion from current public IP"
+  cidr_ipv4         = local.my_public_ip_cidr
+  from_port         = 22
+  ip_protocol       = "tcp"
+  to_port           = 22
 }
 
 resource "aws_vpc_security_group_egress_rule" "bastion_all_outbound_ipv4" {
   security_group_id = aws_security_group.bastion_sg.id
-description = "Allow all outbound traffic from bastion"
-  cidr_ipv4   = "0.0.0.0/0"
-  ip_protocol = "-1"
+  description       = "Allow all outbound traffic from bastion"
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
 }

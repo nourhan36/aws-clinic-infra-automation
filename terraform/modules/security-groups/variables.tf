@@ -11,5 +11,5 @@ variable "vpc_cidr_block" {
 }
 
 variable "my_ip_cidr" {
-  type        = string
+  type = string
 }
