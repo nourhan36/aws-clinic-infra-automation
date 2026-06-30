@@ -74,13 +74,6 @@ variable "tags" {
 #========================================================================
 # Key Pair
 variable "key_name" {
-  description = "Existing AWS EC2 key pair name"
-  type        = string
-}
-
-#=========================================================================
-# Security Groups
-variable "my_ip_cidr" {
   type = string
 }
 
