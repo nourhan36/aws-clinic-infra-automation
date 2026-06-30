@@ -21,6 +21,7 @@ module "security-groups" {
   project_name   = var.project_name
   vpc_id         = module.vpc.vpc_id
   vpc_cidr_block = module.vpc.vpc_cidr_block
+  my_ip_cidr     = var.my_ip_cidr
 }
 
 module "ecr" {
@@ -40,6 +41,7 @@ module "launch_template" {
   instance_profile_name = module.iam.instance_profile_name
   instance_type         = var.instance_type
   ami_id                = var.ami_id
+  key_name              = var.key_name
 }
 
 module "alb" {
@@ -78,4 +80,16 @@ module "cloudwatch" {
   alarm_actions = []
 
   tags = var.tags
+}
+
+module "bastion" {
+  source = "./modules/bastion"
+
+  project_name          = var.project_name
+  ami_id                = var.ami_id
+  instance_type         = var.bastion_instance_type
+  public_subnet_id      = module.vpc.public_subnet_ids[0]
+  bastion_sg_id         = module.security-groups.bastion_sg_id
+  key_name              = var.key_name
+  instance_profile_name = module.iam.bastion_instance_profile_name
 }

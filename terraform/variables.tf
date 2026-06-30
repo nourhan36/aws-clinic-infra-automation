@@ -70,3 +70,22 @@ variable "tags" {
     ManagedBy   = "Terraform"
   }
 }
+
+#========================================================================
+# Key Pair
+variable "key_name" {
+  description = "Existing AWS EC2 key pair name"
+  type        = string
+}
+
+#=========================================================================
+# Security Groups
+variable "my_ip_cidr" {
+  type = string
+}
+
+#=========================================================================
+# Bastion
+variable "bastion_instance_type" {
+  type = string
+}
