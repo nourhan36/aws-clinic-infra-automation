@@ -21,7 +21,6 @@ module "security-groups" {
   project_name   = var.project_name
   vpc_id         = module.vpc.vpc_id
   vpc_cidr_block = module.vpc.vpc_cidr_block
-  my_ip_cidr     = var.my_ip_cidr
 }
 
 module "ecr" {
