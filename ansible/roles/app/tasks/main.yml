@@ -1,0 +1,64 @@
+- name: Create app directory
+  ansible.builtin.file:
+    path: "{{ app_dir }}"
+    state: directory
+    owner: ec2-user
+    group: ec2-user
+    mode: "0755"
+
+- name: Create production env file
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ app_dir }}/.env"
+    owner: ec2-user
+    group: ec2-user
+    mode: "0600"
+
+- name: Login to Amazon ECR
+  ansible.builtin.shell: |
+    aws ecr get-login-password --region {{ aws_region }} \
+    | docker login --username AWS --password-stdin {{ ecr_repository_url | regex_replace('/.*$', '') }}
+  changed_when: false
+
+- name: Pull Docker image from ECR
+  ansible.builtin.command: >
+    docker pull {{ ecr_repository_url }}:{{ image_tag }}
+
+- name: Run Django migrations
+  ansible.builtin.shell: |
+    docker run --rm \
+      --env-file {{ app_dir }}/.env \
+      {{ ecr_repository_url }}:{{ image_tag }} \
+      python manage.py migrate --noinput
+
+- name: Stop old container if exists
+  ansible.builtin.shell: |
+    docker stop {{ app_name }} || true
+  changed_when: false
+
+- name: Remove old container if exists
+  ansible.builtin.shell: |
+    docker rm {{ app_name }} || true
+  changed_when: false
+
+- name: Start new Django container
+  ansible.builtin.shell: |
+    docker run -d \
+      --name {{ app_name }} \
+      --restart unless-stopped \
+      -p {{ host_port }}:{{ container_port }} \
+      --env-file {{ app_dir }}/.env \
+      {{ ecr_repository_url }}:{{ image_tag }}
+
+- name: Remove unused Docker images
+  ansible.builtin.command: docker image prune -f
+  changed_when: false
+
+- name: Check running containers
+  ansible.builtin.command: docker ps
+  register: docker_ps
+  changed_when: false
+
+- name: Show running containers
+  ansible.builtin.debug:
+    var: docker_ps.stdout_lines
