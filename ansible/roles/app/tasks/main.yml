@@ -30,6 +30,7 @@
       --env-file {{ app_dir }}/.env \
       {{ ecr_repository_url }}:{{ image_tag }} \
       python manage.py migrate --noinput
+  run_once: true
 
 - name: Stop old container if exists
   ansible.builtin.shell: |
