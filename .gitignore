@@ -27,3 +27,5 @@ override.tf.json
 
 *.tfplan
 plan.out
+
+ansible/group_vars/role_app.secrets.yml
