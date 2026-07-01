@@ -15,6 +15,6 @@ container_port: 8000
 DEBUG: "False"
 ALLOWED_HOSTS: "*"
 
-DATABASE_NAME: "postgres"
+DATABASE_NAME: "clinic"
 DATABASE_USER: "clinicadmin"
 DATABASE_PORT: 5432
