@@ -92,3 +92,15 @@ module "bastion" {
   key_name              = var.key_name
   instance_profile_name = module.iam.bastion_instance_profile_name
 }
+
+module "jenkins" {
+  source = "./modules/jenkins"
+
+  project_name          = var.project_name
+  public_subnet_id      = module.vpc.public_subnet_ids[0]
+  security_group_id     = module.security-groups.jenkins_sg_id
+  instance_profile_name = module.iam.jenkins_profile_name
+  key_name              = var.key_name
+  instance_type         = var.instance_type
+  root_volume_size      = 30
+}
