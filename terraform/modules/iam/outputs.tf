@@ -13,3 +13,11 @@ output "ec2_instance_profile_name" {
 output "bastion_instance_profile_name" {
   value = aws_iam_instance_profile.bastion_profile.name
 }
+
+output "jenkins_role_name" {
+  value       = aws_iam_role.jenkins_role.name
+}
+
+output "jenkins_profile_name" {
+  value       = aws_iam_instance_profile.jenkins_profile.name
+}
