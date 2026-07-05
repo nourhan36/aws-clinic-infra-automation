@@ -60,10 +60,33 @@ pipeline {
                         credentialsId: 'clinic-app-ssh-key',
                         keyFileVariable: 'SSH_KEY',
                         usernameVariable: 'SSH_USER'
+                    ),
+                    string(
+                        credentialsId: 'django-secret-key',
+                        variable: 'DJANGO_SECRET_KEY'
+                    ),
+                    string(
+                        credentialsId: 'clinic-db-password',
+                        variable: 'CLINIC_DB_PASSWORD'
                     )
                 ]) {
                     sh '''
                         chmod 600 "$SSH_KEY"
+
+                        python3 - <<'PY'
+                        import json
+                        import os
+
+                        secrets = {
+                            "SECRET_KEY": os.environ["DJANGO_SECRET_KEY"],
+                            "DATABASE_PASSWORD": os.environ["CLINIC_DB_PASSWORD"]
+                        }
+
+                        with open("ansible-secrets.json", "w") as f:
+                            json.dump(secrets, f)
+                        PY
+
+                        chmod 600 ansible-secrets.json
 
                         ANSIBLE_ROLES_PATH=ansible/roles ansible-playbook \
                         -i ansible/inventories/aws_ec2.yml \
@@ -72,9 +95,12 @@ pipeline {
                         -u "$SSH_USER" \
                         -e ansible_ssh_private_key_file="$SSH_KEY" \
                         -e ansible_user="$SSH_USER" \
+                        -e "@ansible-secrets.json" \
                         -e image_tag="${IMAGE_TAG}" \
                         -e ecr_repository_url="${ECR_REPOSITORY_URL}" \
                         -e aws_region="${AWS_REGION}"
+
+                        rm -f ansible-secrets.json
                     '''
                 }
             }
