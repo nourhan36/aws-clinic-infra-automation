@@ -170,3 +170,14 @@ resource "aws_vpc_security_group_ingress_rule" "app_ssh_from_jenkins" {
   ip_protocol                  = "tcp"
   to_port                      = 22
 }
+
+resource "aws_vpc_security_group_ingress_rule" "jenkins_webhook_from_github" {
+  for_each = toset(var.github_webhook_cidrs)
+
+  security_group_id = aws_security_group.jenkins_sg.id
+  description       = "Allow Jenkins webhook access from GitHub"
+  cidr_ipv4         = each.value
+  from_port         = 8080
+  ip_protocol       = "tcp"
+  to_port           = 8080
+}
