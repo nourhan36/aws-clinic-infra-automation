@@ -74,17 +74,17 @@ pipeline {
                         chmod 600 "$SSH_KEY"
 
                         python3 - <<'PY'
-                        import json
-                        import os
+        import json
+        import os
 
-                        secrets = {
-                            "SECRET_KEY": os.environ["DJANGO_SECRET_KEY"],
-                            "DATABASE_PASSWORD": os.environ["CLINIC_DB_PASSWORD"]
-                        }
+        secrets = {
+            "SECRET_KEY": os.environ["DJANGO_SECRET_KEY"],
+            "DATABASE_PASSWORD": os.environ["CLINIC_DB_PASSWORD"]
+        }
 
-                        with open("ansible-secrets.json", "w") as f:
-                            json.dump(secrets, f)
-                        PY
+        with open("ansible-secrets.json", "w") as f:
+            json.dump(secrets, f)
+        PY
 
                         chmod 600 ansible-secrets.json
 
