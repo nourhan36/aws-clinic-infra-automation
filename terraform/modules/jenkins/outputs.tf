@@ -17,3 +17,7 @@ output "jenkins_url" {
   description = "Jenkins URL"
   value       = "http://${aws_instance.jenkins.public_ip}:8080"
 }
+
+output "jenkins_private_ip" {
+  value       = aws_instance.jenkins.private_ip
+}

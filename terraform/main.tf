@@ -106,3 +106,16 @@ module "jenkins" {
   instance_type         = var.instance_type
   root_volume_size      = 30
 }
+
+module "asg_jenkins_trigger" {
+  source = "./modules/asg-jenkins-trigger"
+  project_name             = var.project_name
+  private_subnet_ids       = module.vpc.private_app_subnet_ids
+  lambda_security_group_id = module.security-groups.lambda_jenkins_trigger_sg_id
+  jenkins_private_ip       = module.jenkins.jenkins_private_ip
+  app_asg_name             = module.asg.asg_name
+  jenkins_user             = var.jenkins_user
+  jenkins_api_token        = var.jenkins_api_token
+  jenkins_job_name         = "clinic-cd"
+  image_tag                = "latest"
+}

@@ -90,3 +90,15 @@ variable "github_webhook_cidrs" {
   type        = list(string)
   default     = []
 }
+
+#=========================================================================
+# Lambda
+variable "jenkins_user" {
+  type      = string
+  sensitive = true
+}
+
+variable "jenkins_api_token" {
+  type      = string
+  sensitive = true
+}
