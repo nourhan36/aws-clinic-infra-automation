@@ -65,14 +65,14 @@ pipeline {
                     sh '''
                         chmod 600 "$SSH_KEY"
 
-                        ansible-playbook \
-                          -i ansible/inventories/aws_ec2.yml \
-                          ansible/playbooks/deploy.yml \
-                          --private-key "$SSH_KEY" \
-                          -u "$SSH_USER" \
-                          -e image_tag="${IMAGE_TAG}" \
-                          -e ecr_repository_url="${ECR_REPOSITORY_URL}" \
-                          -e aws_region="${AWS_REGION}"
+                        ANSIBLE_ROLES_PATH=ansible/roles ansible-playbook \
+                        -i ansible/inventories/aws_ec2.yml \
+                        ansible/playbooks/deploy.yml \
+                        --private-key "$SSH_KEY" \
+                        -u "$SSH_USER" \
+                        -e image_tag="${IMAGE_TAG}" \
+                        -e ecr_repository_url="${ECR_REPOSITORY_URL}" \
+                        -e aws_region="${AWS_REGION}"
                     '''
                 }
             }
