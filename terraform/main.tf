@@ -97,6 +97,7 @@ module "jenkins" {
   source = "./modules/jenkins"
 
   project_name          = var.project_name
+  ami_id                = var.ami_id
   public_subnet_id      = module.vpc.public_subnet_ids[0]
   security_group_id     = module.security-groups.jenkins_sg_id
   instance_profile_name = module.iam.jenkins_profile_name
