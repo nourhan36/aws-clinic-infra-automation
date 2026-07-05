@@ -181,3 +181,32 @@ resource "aws_vpc_security_group_ingress_rule" "jenkins_webhook_from_github" {
   ip_protocol       = "tcp"
   to_port           = 8080
 }
+
+# Lambda that triggers Jenkins CD after ASG launch events
+resource "aws_security_group" "lambda_jenkins_trigger_sg" {
+  name        = "${var.project_name}-lambda-jenkins-trigger-sg"
+  description = "Security group for Lambda that triggers Jenkins"
+  vpc_id      = var.vpc_id
+
+  tags = {
+    Name = "${var.project_name}-lambda-jenkins-trigger-sg"
+  }
+}
+
+resource "aws_vpc_security_group_egress_rule" "lambda_to_jenkins_8080" {
+  security_group_id            = aws_security_group.lambda_jenkins_trigger_sg.id
+  description                  = "Allow Lambda to call Jenkins on port 8080"
+  referenced_security_group_id = aws_security_group.jenkins_sg.id
+  from_port                    = 8080
+  ip_protocol                  = "tcp"
+  to_port                      = 8080
+}
+
+resource "aws_vpc_security_group_ingress_rule" "jenkins_8080_from_lambda" {
+  security_group_id            = aws_security_group.jenkins_sg.id
+  description                  = "Allow Jenkins webhook/API access from Lambda"
+  referenced_security_group_id = aws_security_group.lambda_jenkins_trigger_sg.id
+  from_port                    = 8080
+  ip_protocol                  = "tcp"
+  to_port                      = 8080
+}

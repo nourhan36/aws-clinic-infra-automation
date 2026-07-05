@@ -17,3 +17,7 @@ output "bastion_sg_id" {
 output "jenkins_sg_id" {
   value       = aws_security_group.jenkins_sg.id
 }
+
+output "lambda_jenkins_trigger_sg_id" {
+  value       = aws_security_group.lambda_jenkins_trigger_sg.id
+}
