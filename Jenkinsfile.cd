@@ -1,0 +1,81 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'IMAGE_TAG', defaultValue: '', description: 'Docker image tag to deploy')
+    }
+
+    environment {
+        AWS_REGION = 'us-east-1'
+        ECR_REPOSITORY_URL = '724413959426.dkr.ecr.us-east-1.amazonaws.com/clinic-repo'
+        ANSIBLE_HOST_KEY_CHECKING = 'False'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Validate Parameters') {
+            steps {
+                script {
+                    if (!params.IMAGE_TAG?.trim()) {
+                        error "IMAGE_TAG parameter is required"
+                    }
+                }
+
+                sh '''
+                    echo "Deploying image:"
+                    echo "${ECR_REPOSITORY_URL}:${IMAGE_TAG}"
+                '''
+            }
+        }
+
+        stage('Check Ansible Inventory') {
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'clinic-app-ssh-key',
+                        keyFileVariable: 'SSH_KEY',
+                        usernameVariable: 'SSH_USER'
+                    )
+                ]) {
+                    sh '''
+                        chmod 600 "$SSH_KEY"
+
+                        ansible-inventory \
+                          -i ansible/inventories/aws_ec2.yml \
+                          --graph
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy With Ansible') {
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'clinic-app-ssh-key',
+                        keyFileVariable: 'SSH_KEY',
+                        usernameVariable: 'SSH_USER'
+                    )
+                ]) {
+                    sh '''
+                        chmod 600 "$SSH_KEY"
+
+                        ansible-playbook \
+                          -i ansible/inventories/aws_ec2.yml \
+                          ansible/playbooks/deploy.yml \
+                          --private-key "$SSH_KEY" \
+                          -u "$SSH_USER" \
+                          -e image_tag="${IMAGE_TAG}" \
+                          -e ecr_repository_url="${ECR_REPOSITORY_URL}" \
+                          -e aws_region="${AWS_REGION}"
+                    '''
+                }
+            }
+        }
+    }
+}
