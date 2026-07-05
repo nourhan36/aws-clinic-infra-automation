@@ -1,6 +1,6 @@
 resource "aws_instance" "jenkins" {
   ami                         = var.ami_id
-  instance_type               = var.instance_type
+  instance_type               = "m7i-flex.large"
   subnet_id                   = var.public_subnet_id
   vpc_security_group_ids      = [var.security_group_id]
   iam_instance_profile        = var.instance_profile_name
