@@ -14,4 +14,5 @@
       ansible.builtin.setup:
 
   roles:
+    - docker
     - app
