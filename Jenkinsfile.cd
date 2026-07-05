@@ -70,6 +70,8 @@ pipeline {
                         ansible/playbooks/deploy.yml \
                         --private-key "$SSH_KEY" \
                         -u "$SSH_USER" \
+                        -e ansible_ssh_private_key_file="$SSH_KEY" \
+                        -e ansible_user="$SSH_USER" \
                         -e image_tag="${IMAGE_TAG}" \
                         -e ecr_repository_url="${ECR_REPOSITORY_URL}" \
                         -e aws_region="${AWS_REGION}"
