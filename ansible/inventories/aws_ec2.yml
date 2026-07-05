@@ -13,6 +13,7 @@ hostnames:
 
 compose:
   ansible_host: private_ip_address
+  ansible_user: "'ec2-user'"
 
 keyed_groups:
   - key: tags.Role

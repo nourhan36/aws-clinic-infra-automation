@@ -1,7 +1,6 @@
-- name: Update packages
+- name: Update package metadata
   ansible.builtin.yum:
-    name: "*"
-    state: latest
+    update_cache: true
 
 - name: Install Docker and AWS CLI
   ansible.builtin.yum:
