@@ -15,8 +15,15 @@ dnf install -y \
   python3 \
   python3-pip \
   fontconfig \
-  java-21-amazon-corretto
+  java-21-amazon-corretto \
+  dnf-plugins-core \
+  yum-utils
 
+# Install Terraform
+dnf config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+dnf install -y terraform
+
+# Install Jenkins
 wget -O /etc/yum.repos.d/jenkins.repo \
   https://pkg.jenkins.io/rpm-stable/jenkins.repo
 
@@ -36,6 +43,10 @@ usermod -aG docker jenkins
 python3 -m pip install --upgrade pip || true
 python3 -m pip install ansible boto3 botocore || true
 
+terraform version || true
+aws --version || true
+ansible --version || true
+
 systemctl restart jenkins
 
 cat > /etc/motd <<'EOF'
@@ -49,4 +60,7 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 Check user data logs:
 sudo cat /var/log/jenkins-user-data.log
+
+Check Terraform:
+terraform version
 EOF
