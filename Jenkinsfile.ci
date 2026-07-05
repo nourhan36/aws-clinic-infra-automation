@@ -1,4 +1,4 @@
-// Testing Webhook
+// Testing GitHub Webhook
 pipeline {
     agent any
 
