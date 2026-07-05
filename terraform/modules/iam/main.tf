@@ -123,7 +123,11 @@ resource "aws_iam_role_policy" "jenkins_ec2_describe" {
         Action = [
           "ec2:DescribeInstances",
           "ec2:DescribeTags",
-          "ec2:DescribeRegions"
+          "ec2:DescribeRegions",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "dynamodb:GetItem",
+          "dynamodb:DescribeTable"
         ]
         Resource = "*"
       },
