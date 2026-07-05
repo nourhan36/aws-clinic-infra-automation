@@ -397,21 +397,6 @@ This project helped me practice:
 
 ---
 
-## Future Improvements
-
-Possible improvements:
-
-- Add HTTPS using ACM and an ALB listener on port 443
-- Use AWS Secrets Manager instead of Jenkins credentials for app secrets
-- Add RDS Multi-AZ for higher database availability
-- Add Route 53 domain name
-- Add blue/green deployment strategy
-- Add Prometheus and Grafana monitoring
-- Add automated rollback support in Jenkins CD
-- Add Slack or email notifications for pipeline status
-
----
-
 ## Final Result
 
 The final system provides an automated DevOps workflow for a Django application on AWS:
