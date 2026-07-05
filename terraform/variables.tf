@@ -82,3 +82,11 @@ variable "key_name" {
 variable "bastion_instance_type" {
   type = string
 }
+
+#=========================================================================
+# Security Groups
+variable "github_webhook_cidrs" {
+  description = "GitHub webhook CIDR ranges allowed to access Jenkins"
+  type        = list(string)
+  default     = []
+}
